@@ -28,23 +28,29 @@ function createGalarryMarkup(pictures) {
   return markup;
 }
 
+const showFullPic = basicLightbox.create(`<img src="">`, {
+    onShow: instance => {
+        window.addEventListener("keydown", onCloseImg);
+    },
+    onClose: instance => {
+        window.removeEventListener("keydown", onCloseImg);
+    }
+})
+
+console.log(basicLightbox.create(`<img src="">`));
+
 function onShowFullImg(e) {
   e.preventDefault();
   if (e.target.nodeName !== "IMG") {
     return;
   }
-
-  onShow(e.target.dataset.source).show();
-  window.addEventListener("keydown", onCloseImg);
-}
-
-function onShow(target) {
-  const onShow = basicLightbox.create(`<img src="${target}">`);
-  return onShow;
+    showFullPic.element().querySelector("img").src = e.target.dataset.source;
+    showFullPic.show()
 }
 
 function onCloseImg(e) {
   if (e.code === "Escape") {
-    console.log("Added");
+      showFullPic.close()
+      return
   }
 }
